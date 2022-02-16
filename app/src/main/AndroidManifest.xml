@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Memorama">
         <activity
+            android:name=".ScoresView"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
