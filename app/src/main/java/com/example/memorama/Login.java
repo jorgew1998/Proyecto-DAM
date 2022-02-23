@@ -78,7 +78,7 @@ public class Login extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(Login.this, "No se pudo inisiar sesión con los datos proporcionados. Por favor, revíselos e intente de nuevo.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Login.this, "No se pudo iniciar sesión con los datos proporcionados. Por favor, revíselos e intente de nuevo.", Toast.LENGTH_LONG).show();
                 }
             }
         });
