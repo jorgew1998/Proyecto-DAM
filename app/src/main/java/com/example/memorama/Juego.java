@@ -3,6 +3,7 @@ package com.example.memorama;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -10,18 +11,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Juego extends Activity {
 
     // variables para los componentes de la vista
     ImageButton imb00, imb01, imb02, imb03, imb04, imb05, imb06, imb07, imb08, imb09, imb10, imb11, imb12, imb13, imb14, imb15;
     ImageButton[] tablero = new ImageButton[16];
-    Button botonReiniciar, botonSalir;
+    Button botonReiniciar, botonSalir, botonGuardarPuntaje;
     TextView textoPuntuacion;
     int puntuacion;
     int aciertos;
@@ -36,6 +46,9 @@ public class Juego extends Activity {
     int numeroPrimero, numeroSegundo;
     boolean bloqueo = false;
     final Handler handler = new Handler();
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,6 +96,9 @@ public class Juego extends Activity {
     private void cargarBotones(){
         botonReiniciar = findViewById(R.id.botonJuegoReiniciar);
         botonSalir = findViewById(R.id.botonJuegoSalir);
+        botonGuardarPuntaje = findViewById(R.id.botonGuardarP);
+        this.botonGuardarPuntaje.setVisibility(View.GONE);
+
         botonReiniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +112,39 @@ public class Juego extends Activity {
                 finish();
             }
         });
+
+        botonGuardarPuntaje.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guardaPuntaje();
+            }
+        });
     }
+
+    private void guardaPuntaje() {
+        // Create a new user with a first and last name
+        Map<String, Object> score = new HashMap<>();
+        score.put("user", "Usuario");
+        score.put("score", puntuacion);
+
+        // Add a new document with a generated ID
+        db.collection("scores")
+                .add(score)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+        this.botonGuardarPuntaje.setVisibility(View.GONE);
+    }
+
 
     private void cargarTexto(){
         textoPuntuacion = findViewById(R.id.texto_puntuacion);
@@ -151,6 +199,7 @@ public class Juego extends Activity {
                 if(aciertos == imagenes.length){
                     Toast toast = Toast.makeText(getApplicationContext(), "Has ganado!!", Toast.LENGTH_LONG);
                     toast.show();
+                    this.botonGuardarPuntaje.setVisibility(View.VISIBLE);
                 }
             } else {
                 handler.postDelayed(new Runnable() {
