@@ -14,11 +14,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,8 +52,10 @@ public class Juego extends Activity {
     boolean bloqueo = false;
     final Handler handler = new Handler();
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String TAG = "Email";
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,25 +130,45 @@ public class Juego extends Activity {
 
     private void guardaPuntaje() {
         // Create a new user with a first and last name
-        Map<String, Object> score = new HashMap<>();
-        score.put("user", "Usuario");
-        score.put("score", puntuacion);
 
-        // Add a new document with a generated ID
-        db.collection("scores")
-                .add(score)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+
+
+        db.collection("Usuarios")
+                .whereEqualTo("email", mAuth.getCurrentUser().getEmail())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Map<String, Object> score = new HashMap<>();
+                                score.put("user", document.getData().get("nickname"));
+                                score.put("score", puntuacion);
+                                // Add a new document with a generated ID
+                                db.collection("scores")
+                                        .add(score)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
 
+                                            }
+                                        });
+
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
                     }
                 });
+
+
         this.botonGuardarPuntaje.setVisibility(View.GONE);
     }
 
