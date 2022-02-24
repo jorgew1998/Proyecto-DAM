@@ -221,7 +221,7 @@ public class Juego extends Activity {
                 primero = null;
                 bloqueo = false;
                 aciertos++;
-                puntuacion++;
+                puntuacion=puntuacion + 2;
                 textoPuntuacion.setText("Puntuación: " + puntuacion);
                 if(aciertos == imagenes.length){
                     Toast toast = Toast.makeText(getApplicationContext(), "Has ganado!!", Toast.LENGTH_LONG);

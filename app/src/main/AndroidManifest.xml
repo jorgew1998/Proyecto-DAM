@@ -10,8 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Memorama">
         <activity
-            android:name=".Recuperar"
+            android:name=".ScoresView"
             android:exported="false" />
+        <activity
+            android:name=".Recuperar"
+            android:exported="false"/>
         <activity
             android:name=".Registro"
             android:exported="false" />

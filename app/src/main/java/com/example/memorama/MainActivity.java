@@ -13,8 +13,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button play, salir;
+
+    Button play, salir, scores;
+
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         play = findViewById(R.id.botonMainJugar);
         salir = findViewById(R.id.botonMainSalir);
+        scores = findViewById(R.id.btnScores);
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,10 +42,23 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        scores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("Pasando a pantalla de puntajes");
+                goToScoresView();
+            }
+        });
     }
 
     private void iniciarJuego(){
         Intent i = new Intent(this, Juego.class);
+        startActivity(i);
+    }
+
+    private void goToScoresView() {
+        Intent i = new Intent(this, ScoresView.class);
         startActivity(i);
     }
 }
