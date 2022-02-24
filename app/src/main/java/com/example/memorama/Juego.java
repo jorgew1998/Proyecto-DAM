@@ -3,6 +3,7 @@ package com.example.memorama;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -10,18 +11,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Juego extends Activity {
 
     // variables para los componentes de la vista
     ImageButton imb00, imb01, imb02, imb03, imb04, imb05, imb06, imb07, imb08, imb09, imb10, imb11, imb12, imb13, imb14, imb15;
     ImageButton[] tablero = new ImageButton[16];
-    Button botonReiniciar, botonSalir;
+    Button botonReiniciar, botonSalir, botonGuardarPuntaje;
     TextView textoPuntuacion;
     int puntuacion;
     int aciertos;
@@ -36,6 +51,11 @@ public class Juego extends Activity {
     int numeroPrimero, numeroSegundo;
     boolean bloqueo = false;
     final Handler handler = new Handler();
+
+    String TAG = "Email";
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,6 +103,9 @@ public class Juego extends Activity {
     private void cargarBotones(){
         botonReiniciar = findViewById(R.id.botonJuegoReiniciar);
         botonSalir = findViewById(R.id.botonJuegoSalir);
+        botonGuardarPuntaje = findViewById(R.id.botonGuardarP);
+        this.botonGuardarPuntaje.setVisibility(View.GONE);
+
         botonReiniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +119,59 @@ public class Juego extends Activity {
                 finish();
             }
         });
+
+        botonGuardarPuntaje.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guardaPuntaje();
+            }
+        });
     }
+
+    private void guardaPuntaje() {
+        // Create a new user with a first and last name
+
+
+
+        db.collection("Usuarios")
+                .whereEqualTo("email", mAuth.getCurrentUser().getEmail())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Map<String, Object> score = new HashMap<>();
+                                score.put("user", document.getData().get("nickname"));
+                                score.put("score", puntuacion);
+                                // Add a new document with a generated ID
+                                db.collection("scores")
+                                        .add(score)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+
+                                            }
+                                        });
+
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+        this.botonGuardarPuntaje.setVisibility(View.GONE);
+    }
+
 
     private void cargarTexto(){
         textoPuntuacion = findViewById(R.id.texto_puntuacion);
@@ -146,11 +221,12 @@ public class Juego extends Activity {
                 primero = null;
                 bloqueo = false;
                 aciertos++;
-                puntuacion++;
+                puntuacion=puntuacion + 2;
                 textoPuntuacion.setText("Puntuación: " + puntuacion);
                 if(aciertos == imagenes.length){
                     Toast toast = Toast.makeText(getApplicationContext(), "Has ganado!!", Toast.LENGTH_LONG);
                     toast.show();
+                    this.botonGuardarPuntaje.setVisibility(View.VISIBLE);
                 }
             } else {
                 handler.postDelayed(new Runnable() {

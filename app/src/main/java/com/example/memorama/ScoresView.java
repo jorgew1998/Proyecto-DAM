@@ -17,8 +17,10 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.core.OrderBy;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -51,6 +53,8 @@ public class ScoresView extends AppCompatActivity {
         });
 
         db.collection("scores")
+                .orderBy("score", Query.Direction.DESCENDING)
+                .limit(40)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
