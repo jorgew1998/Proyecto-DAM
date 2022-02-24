@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:textAlignment="center"
     tools:context=".ScoresView">
 
     <ScrollView
@@ -17,7 +19,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
@@ -34,8 +36,15 @@
                 android:textStyle="bold" />
 
             <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:id="@+id/scoresTable"
+                android:layout_width="900px"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="25px"
+                android:layout_marginBottom="40px"
+                android:background="#ECE8F1"
+                android:gravity="clip_horizontal|center|center_horizontal|center_vertical">
+
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -43,19 +52,26 @@
 
                     <TextView
                         android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="450px"
                         android:layout_height="wrap_content"
-                        android:text="USUARIO" />
+                        android:background="@drawable/border"
+                        android:text="USUARIO"
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/textView"
-                        android:layout_width="wrap_content"
+                        android:layout_width="450px"
                         android:layout_height="wrap_content"
-                        android:text="PUNTAJE" />
+                        android:background="@drawable/border"
+                        android:text="PUNTAJE"
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow
@@ -64,16 +80,16 @@
 
             </TableLayout>
 
+            <Button
+                android:id="@+id/btnBack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Regresar al Inicio"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="1dp" />
+
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="69dp"
-        android:text="Regresar al Inicio"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
