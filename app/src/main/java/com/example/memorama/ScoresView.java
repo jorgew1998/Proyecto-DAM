@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -32,6 +33,8 @@ public class ScoresView extends AppCompatActivity {
     Button back;
     TableLayout table;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
     public static final String TAG = "MYDOC";
 
     @Override
@@ -133,6 +136,17 @@ public class ScoresView extends AppCompatActivity {
         }
 
         return scoresMap;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (mAuth.getCurrentUser() == null){
+//            Intent intent = new Intent(ScoresView.this, Login.class);
+//            startActivity(intent);
+            finish();
+        }
     }
 
 }
