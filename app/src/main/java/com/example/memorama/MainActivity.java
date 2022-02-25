@@ -61,4 +61,15 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, ScoresView.class);
         startActivity(i);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (mAuth.getCurrentUser() == null){
+//            Intent intent = new Intent(ScoresView.this, Login.class);
+//            startActivity(intent);
+            finish();
+        }
+    }
 }
