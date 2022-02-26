@@ -90,6 +90,33 @@ mAuth.setLanguageCode("es");
 
 Como dato adicional se puede visualizar en la imágen del código de la función que se hace uso del método ```setLanguageCode``` este método permite enviar un e-mail para resetear la contraseña con el lenguaje en español facilitando la comprensión del usuario al momento de recibir el correo electrónico.
 
+## Funcionalidad del juego
+
+Para la funcionalidad del juego es necesario guardar las imagenes tanto para el tablero del memorama y el fondo en la carpeta drawable como se muestra en la siguiente imagen:
+
+![image](https://user-images.githubusercontent.com/66254573/155860422-01dc9330-d244-4418-9a6e-0541f54761f3.png)
+
+Se crea una archivo Juego.java el cual contiene específicamente el código del funcionamiento del mismo, se empieza con la declaración de las variables para los componentes de la vista:
+
+```
+ ImageButton imb00, imb01, imb02, imb03, imb04, imb05, imb06, imb07, imb08, imb09, imb10, imb11, imb12, imb13, imb14, imb15;
+    ImageButton[] tablero = new ImageButton[16];
+    Button botonReiniciar, botonSalir, botonGuardarPuntaje;
+    TextView textoPuntuacion;
+    int puntuacion;
+    int aciertos;
+
+    //imagenes
+    int[] imagenes;
+    int fondo;
+
+    //variables del juego
+    ArrayList<Integer> arrayDesordenado;
+    ImageButton primero;
+    int numeroPrimero, numeroSegundo;
+    boolean bloqueo = false;
+    final Handler handler = new Handler();
+```
 
 
 
