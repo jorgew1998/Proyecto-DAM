@@ -12,6 +12,21 @@ Una vez instanciada podemos hacer uso de los métodos de inicio de sesión que n
 
 ![image](https://user-images.githubusercontent.com/58042215/155858770-844687a5-32cf-49c0-9ddd-abfea792bec2.png)
 
+```
+mAuth.signInWithEmailAndPassword(emailLo, passwordLo).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(Login.this, "No se pudo iniciar sesión con los datos proporcionados. Por favor, revíselos e intente de nuevo.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+```
+
 Como dato adicional se puede visualizar en la imágen anterior que se crea la funcion ``` onStart ``` propia del IDE de desarrollo de Android Studio. Esa función detecta si al abrir la aplicación una sesión se encuentra activa, esto provoca que el usuario no tenga que pasar nuevamente por la pantalla de inicio de sesión, gracias a esto, se otorga  profesionalismo a la aplicación móvil.
 
 ![image](https://user-images.githubusercontent.com/58042215/155859117-9d5e802a-0bf1-4b2b-b742-101d832c933f.png)
