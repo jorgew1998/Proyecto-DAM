@@ -267,6 +267,7 @@ private void comprobar(int i, final ImageButton imgb){
 
 La pantalla correspondiente al juego se puede visualizar a coninuación la cual muestra a un usuario jugando mientras la puntuacion se modifica:
 
-![image](https://user-images.githubusercontent.com/66254573/155860775-63127af0-ffc2-4bf6-9385-a79ad4a4b4b2.png)
+![WhatsApp Image 2022-02-26 at 16 58 08 (1)](https://user-images.githubusercontent.com/66254573/155860870-f6d374bf-4b45-4ec2-8801-e2c88f8cd2bd.jpeg)
+
 
 
