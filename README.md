@@ -96,7 +96,7 @@ Para la funcionalidad del juego es necesario guardar las imagenes tanto para el 
 
 ![image](https://user-images.githubusercontent.com/66254573/155860422-01dc9330-d244-4418-9a6e-0541f54761f3.png)
 
-Se crea una archivo Juego.java el cual contiene específicamente el código del funcionamiento del mismo, se empieza con la declaración de las variables para los componentes de la vista:
+Se crea una archivo Juego.java el cual contiene específicamente el código del funcionamiento del mismo, se empieza con la declaración de las variables para los componentes de la vista, variables del juego e imagenes:
 
 ```
  ImageButton imb00, imb01, imb02, imb03, imb04, imb05, imb06, imb07, imb08, imb09, imb10, imb11, imb12, imb13, imb14, imb15;
@@ -106,11 +106,9 @@ Se crea una archivo Juego.java el cual contiene específicamente el código del 
     int puntuacion;
     int aciertos;
 
-    //imagenes
     int[] imagenes;
     int fondo;
 
-    //variables del juego
     ArrayList<Integer> arrayDesordenado;
     ImageButton primero;
     int numeroPrimero, numeroSegundo;
@@ -118,10 +116,157 @@ Se crea una archivo Juego.java el cual contiene específicamente el código del 
     final Handler handler = new Handler();
 ```
 
+Una vez declarado lo necesario se genera una función la cual permitira cargar el tablero del juego por medio de la asignación a los componentes respectivos como se muestra a continuación:
 
+```
+private void cargarTablero(){
+        imb00 = findViewById(R.id.boton00);
+        imb01 = findViewById(R.id.boton01);
+        imb02 = findViewById(R.id.boton02);
+        imb03 = findViewById(R.id.boton03);
+        imb04 = findViewById(R.id.boton04);
+        imb05 = findViewById(R.id.boton05);
+        imb06 = findViewById(R.id.boton06);
+        imb07 = findViewById(R.id.boton07);
+        imb08 = findViewById(R.id.boton08);
+        imb09 = findViewById(R.id.boton09);
+        imb10 = findViewById(R.id.boton10);
+        imb11 = findViewById(R.id.boton11);
+        imb12 = findViewById(R.id.boton12);
+        imb13 = findViewById(R.id.boton13);
+        imb14 = findViewById(R.id.boton14);
+        imb15 = findViewById(R.id.boton15);
 
+        tablero[0] = imb00;
+        tablero[1] = imb01;
+        tablero[2] = imb02;
+        tablero[3] = imb03;
+        tablero[4] = imb04;
+        tablero[5] = imb05;
+        tablero[6] = imb06;
+        tablero[7] = imb07;
+        tablero[8] = imb08;
+        tablero[9] = imb09;
+        tablero[10] = imb10;
+        tablero[11] = imb11;
+        tablero[12] = imb12;
+        tablero[13] = imb13;
+        tablero[14] = imb14;
+        tablero[15] = imb15;
+    }
+```
 
+Se necesita una función que permita presentar los botones para reinicar el juego, salir o guardar los puntajes del mismo, para lo cual se hace uso de setOnClickListener con cada botón como se muestra en la siguiente sección de código:
 
+```
+private void cargarBotones(){
+        botonReiniciar = findViewById(R.id.botonJuegoReiniciar);
+        botonSalir = findViewById(R.id.botonJuegoSalir);
+        botonGuardarPuntaje = findViewById(R.id.botonGuardarP);
+        this.botonGuardarPuntaje.setVisibility(View.GONE);
 
+        botonReiniciar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                init();
+            }
+        });
+
+        botonSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        botonGuardarPuntaje.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guardaPuntaje();
+            }
+        });
+    }
+```
+
+Exitse una función denominada como cargarTexto la cual permite mostrar en el elemento textoPuntiacion la puntuacion que el usuario se encuentra generando al momento de jugar como se muestra a continuación:
+
+```
+private void cargarTexto(){
+        textoPuntuacion = findViewById(R.id.texto_puntuacion);
+        puntuacion = 0;
+        aciertos = 0;
+        textoPuntuacion.setText("Puntuacion: " + puntuacion);
+    }
+```
+
+Con respecto a la carga de imagenes se realiza una funcion la cual hace referencia las imagenes de la carpeta drawable como se muestra a continuación: 
+
+```
+private void cargarImagenes(){
+        imagenes = new int[]{
+                R.drawable.la0,
+                R.drawable.la1,
+                R.drawable.la2,
+                R.drawable.la3,
+                R.drawable.la4,
+                R.drawable.la5,
+                R.drawable.la6,
+                R.drawable.la7
+        };
+        fondo = R.drawable.fondo;
+    }
+```
+
+Una de las funciones mas importantes para el funcionamiento del juego es la denominada como comprobar ya que esta función determina durante el juego si las carats seleccionadas por el usuario son iguales o no, es decir, se realiza la comprobración si la variable primero es igual a null, caso contrario a la variable bloqueo se el asigna un valor de true. Mientras el usuario se encuentra jugando los aciertos y la puntuacion iran modificándose ya que si el usuario se equivoca los aciertos disminurán, una vez que el usuario encuentre todas las parejas se presentara la puntuación obtenida y ademas un mensaje de Has ganado.
+
+```
+private void comprobar(int i, final ImageButton imgb){
+        if(primero == null){
+            primero = imgb;
+            primero.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            primero.setImageResource(imagenes[arrayDesordenado.get(i)]);
+            primero.setEnabled(false);
+            numeroPrimero = arrayDesordenado.get(i);
+        } else {
+            bloqueo = true;
+            imgb.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imgb.setImageResource(imagenes[arrayDesordenado.get(i)]);
+            imgb.setEnabled(false);
+            numeroSegundo = arrayDesordenado.get(i);
+            if(numeroPrimero == numeroSegundo){
+                primero = null;
+                bloqueo = false;
+                aciertos++;
+                puntuacion++;
+                textoPuntuacion.setText("Puntuación: " + puntuacion);
+                if(aciertos == imagenes.length){
+                    Toast toast = Toast.makeText(getApplicationContext(), "Has ganado!!", Toast.LENGTH_LONG);
+                    toast.show();
+                    this.botonGuardarPuntaje.setVisibility(View.VISIBLE);
+                }
+            } else {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        primero.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        primero.setImageResource(fondo);
+                        primero.setEnabled(true);
+                        imgb.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        imgb.setImageResource(fondo);
+                        imgb.setEnabled(true);
+                        bloqueo = false;
+                        primero = null;
+                        puntuacion--;
+                        textoPuntuacion.setText("Puntuación: " + puntuacion);
+                    }
+                }, 1000);
+            }
+        }
+    }
+```
+
+La pantalla correspondiente al juego se puede visualizar a coninuación la cual muestra a un usuario jugando mientras la puntuacion se modifica:
+
+![image](https://user-images.githubusercontent.com/66254573/155860775-63127af0-ffc2-4bf6-9385-a79ad4a4b4b2.png)
 
 
