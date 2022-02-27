@@ -275,8 +275,7 @@ Para realizar el respectivo envio de los puntajes a Firebase cada vez que un usu
 
 ![image](https://user-images.githubusercontent.com/58036212/155887597-f5779541-b758-4785-91c5-c583f451bad5.png)
 
-Para esto es necesario implementar todas las configuraciones para añadir nuestro proyecto a firebase.
-Como primer paso tenemos el de modififcar el archivo Gradle poniendo las siguientes lineas en nuestro gradle a niveel de módulo:
+Para esto es necesario implementar todas las configuraciones para añadir nuestro proyecto a firebase. Como primer paso tenemos el de modififcar el archivo Gradle poniendo las siguientes lineas en nuestro gradle a nivel de módulo:
 
 ```
 dependencies {
@@ -288,7 +287,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
 }
 ```
-Ahora en nuestro archivo de juego procedemos a importar las siguientes importaciones para que se reconozca las instrucciones en nuestra clase, las primera funciona para realizar la operacion de obtener el nombre y las siguientes para trabajar con la base de datos de Firestore:
+Ahora en nuestro archivo de juego procedemos a importar las siguientes importaciones para que se reconozca las instrucciones en nuestra clase, las primera funciona para realizar la operación de obtener el nombre y las siguientes para trabajar con la base de datos de Firestore:
 
 ```
 import com.google.firebase.auth.FirebaseAuth;
@@ -299,7 +298,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 ```
 
-Lo siguiente es declarar el boton y darle la propiedad de que no se presente al iniciar el juego y la orden que solo al presionarlo realice la funcion:
+Lo siguiente es declarar el boton y darle la propiedad de que no se presente al iniciar el juego y la orden que solo al presionarlo realice la función:
 
 ```
         botonGuardarPuntaje = findViewById(R.id.botonGuardarP);
@@ -314,7 +313,7 @@ Lo siguiente es declarar el boton y darle la propiedad de que no se presente al 
         });
 ```
 
-Ahora para darle las funcionalidades al boton creamos la funcion guardaPuntaje, para que esta primero obtenga el nombre del usuario con la sesion activa y posterior a ello guarde en la coleccion "scores" el nombre del usuario y el puntaje que obtuvo, como se muestra la funcion viene siendo:
+Por último, para darle las funcionalidades al boton, creamos la funcion guardaPuntaje, para que esta en primer orden obtenga el nombre del usuario con la sesión activa y posterior a ello guarde en la colección "scores" el nombre del usuario y el puntaje que obtuvo:
 
 ```
 private void guardaPuntaje() {
@@ -362,7 +361,7 @@ private void guardaPuntaje() {
     }
 ```
 
-El resultado que fue guardado en la base de datos se encontrara en la coleccion scores en firestore como se muestra e la siguiente imagen.
+El resultado que fue guardado en la base de datos se encontrara en la coleccion scores en firestore como se muestra en la siguiente imagen.
 
 ![image](https://user-images.githubusercontent.com/58036212/155887495-651c09e7-43d2-4d82-a5e1-ffc252e709f8.png)
 
