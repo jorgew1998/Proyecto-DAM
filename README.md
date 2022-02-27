@@ -269,5 +269,100 @@ La pantalla correspondiente al juego se puede visualizar a coninuación la cual 
 
 ![WhatsApp Image 2022-02-26 at 16 58 08 (1)](https://user-images.githubusercontent.com/66254573/155860870-f6d374bf-4b45-4ec2-8801-e2c88f8cd2bd.jpeg)
 
+## Envio de los puntajes a Firebase
 
+Para realizar el respectivo envio de los puntajes a Firebase cada vez que un usuario termina una pantalla entonces sera necesario un boton que cumpla con esta función, aunque unicamente este boton aparecerá al usuario una vez completado el juego, como se muestra en la siguiente imagen.
+
+![image](https://user-images.githubusercontent.com/58036212/155887597-f5779541-b758-4785-91c5-c583f451bad5.png)
+
+Para esto es necesario implementar todas las configuraciones para añadir nuestro proyecto a firebase.
+Como primer paso tenemos el de modififcar el archivo Gradle poniendo las siguientes lineas en nuestro gradle a niveel de módulo:
+
+```
+dependencies {
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+
+    // Declare the dependency for the Cloud Firestore library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-firestore'
+}
+```
+Ahora en nuestro archivo de juego procedemos a importar las siguientes importaciones para que se reconozca las instrucciones en nuestra clase, las primera funciona para realizar la operacion de obtener el nombre y las siguientes para trabajar con la base de datos de Firestore:
+
+```
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+```
+
+Lo siguiente es declarar el boton y darle la propiedad de que no se presente al iniciar el juego y la orden que solo al presionarlo realice la funcion:
+
+```
+        botonGuardarPuntaje = findViewById(R.id.botonGuardarP);
+        this.botonGuardarPuntaje.setVisibility(View.GONE);
+        ...
+        ...
+        botonGuardarPuntaje.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guardaPuntaje();
+            }
+        });
+```
+
+Ahora para darle las funcionalidades al boton creamos la funcion guardaPuntaje, para que esta primero obtenga el nombre del usuario con la sesion activa y posterior a ello guarde en la coleccion "scores" el nombre del usuario y el puntaje que obtuvo, como se muestra la funcion viene siendo:
+
+```
+private void guardaPuntaje() {
+        // Create a new user with a first and last name
+
+
+
+        db.collection("Usuarios")
+                .whereEqualTo("email", mAuth.getCurrentUser().getEmail())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Map<String, Object> score = new HashMap<>();
+                                score.put("user", document.getData().get("nickname"));
+                                score.put("score", puntuacion);
+                                // Add a new document with a generated ID
+                                db.collection("scores")
+                                        .add(score)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+
+                                            }
+                                        });
+
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+        this.botonGuardarPuntaje.setVisibility(View.GONE);
+    }
+```
+
+El resultado que fue guardado en la base de datos se encontrara en la coleccion scores en firestore como se muestra e la siguiente imagen.
+
+![image](https://user-images.githubusercontent.com/58036212/155887495-651c09e7-43d2-4d82-a5e1-ffc252e709f8.png)
 
