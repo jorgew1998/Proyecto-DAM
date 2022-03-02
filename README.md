@@ -418,4 +418,31 @@ db.collection("scores")
                 });
 ```
 
+## Descarga de aplicación en Aptoide
+
+Como primer paso se debe descaragar la apliación de aptoide, y se dirige a la seccion de Tiendos o Store:
+
+<img src="https://user-images.githubusercontent.com/66254573/156453667-fc2329d0-3df9-42a5-a1b3-a468da011ce0.png" width="361">
+
+Se pulsa el botón de seguir tienda:
+<img src="https://user-images.githubusercontent.com/66254573/156453805-de1dce33-0cf6-44f3-bbd4-9cecff655e47.png" width="361">
+
+Se escribe el nombre jorchdam el cual corresponde al nombre de la tienda:
+<img src="https://user-images.githubusercontent.com/66254573/156453918-adb4cc75-929f-45bf-9da4-2a7cf6d34d89.png" width="361">
+
+Se selecciona la opción de explorar:
+<img src="https://user-images.githubusercontent.com/66254573/156453988-0850e2d3-80e6-4b23-878c-a13a2a937939.png" width="361">
+
+Se selcciona la aplicación llamada memorama:
+<img src="https://user-images.githubusercontent.com/66254573/156454090-678485fa-a833-4050-b9ea-bcf0f63009a9.png" width="361">
+
+Por último se selecciona la opcion de instalar y la aplicación estara disponible en el dospositivo:
+<img src="https://user-images.githubusercontent.com/66254573/156454248-f2b98a79-e03f-4a89-b7c2-57756a1ad391.png" width="361">
+
+
+# Links de los vídeos
+
+* https://www.youtube.com/watch?v=5hBvm_tnrHY&feature=youtu.be
+
+* 
 
