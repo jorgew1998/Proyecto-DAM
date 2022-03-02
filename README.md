@@ -273,7 +273,8 @@ La pantalla correspondiente al juego se puede visualizar a coninuación la cual 
 
 Para realizar el respectivo envio de los puntajes a Firebase cada vez que un usuario termina una pantalla entonces sera necesario un boton que cumpla con esta función, aunque unicamente este boton aparecerá al usuario una vez completado el juego, como se muestra en la siguiente imagen.
 
-![image](https://user-images.githubusercontent.com/58036212/155887597-f5779541-b758-4785-91c5-c583f451bad5.png | width=50)
+
+<img src="https://user-images.githubusercontent.com/58036212/155887597-f5779541-b758-4785-91c5-c583f451bad5.png" width="361">
 
 Para esto es necesario implementar todas las configuraciones para añadir nuestro proyecto a firebase. Como primer paso tenemos el de modififcar el archivo Gradle poniendo las siguientes lineas en nuestro gradle a nivel de módulo:
 
@@ -373,7 +374,7 @@ Primero implementamos una actividad llamada ScoreView. Esta pantalla nos mostrar
 
 
 Para mostrar la pantalla de puntajes más altos como podemos ver en la imagen. Utilizaremos la base de datos Firestore 
-![Screenshot_105](https://user-images.githubusercontent.com/58042023/156451607-a20a9dd5-1a3a-4b07-a0a9-4db2f8d61047.png | width=100) 
+![Screenshot_105](https://user-images.githubusercontent.com/58042023/156451607-a20a9dd5-1a3a-4b07-a0a9-4db2f8d61047.png) 
 
 Para leer los documentos directamente desde Firestore utilizaremos las funciones proporcionadas por la propia documentacion de Firebase
 Además, crearemos Filas para la tabla a medida que vamos recolectando cada dato de forma uniforme.
