@@ -273,7 +273,7 @@ La pantalla correspondiente al juego se puede visualizar a coninuación la cual 
 
 Para realizar el respectivo envio de los puntajes a Firebase cada vez que un usuario termina una pantalla entonces sera necesario un boton que cumpla con esta función, aunque unicamente este boton aparecerá al usuario una vez completado el juego, como se muestra en la siguiente imagen.
 
-![image](https://user-images.githubusercontent.com/58036212/155887597-f5779541-b758-4785-91c5-c583f451bad5.png)
+![image](https://user-images.githubusercontent.com/58036212/155887597-f5779541-b758-4785-91c5-c583f451bad5.png | width=50)
 
 Para esto es necesario implementar todas las configuraciones para añadir nuestro proyecto a firebase. Como primer paso tenemos el de modififcar el archivo Gradle poniendo las siguientes lineas en nuestro gradle a nivel de módulo:
 
@@ -364,4 +364,57 @@ private void guardaPuntaje() {
 El resultado que fue guardado en la base de datos se encontrara en la coleccion scores en firestore como se muestra en la siguiente imagen.
 
 ![image](https://user-images.githubusercontent.com/58036212/155887495-651c09e7-43d2-4d82-a5e1-ffc252e709f8.png)
+
+## Pantalla de Puntajes
+
+Primero implementamos una actividad llamada ScoreView. Esta pantalla nos mostrará los puntajes de los jugadores que han jugado ordenados de forma descendente.
+
+![image](https://user-images.githubusercontent.com/58042023/156452603-78428f43-9fe9-4215-95dc-a02fbe181899.png)
+
+
+Para mostrar la pantalla de puntajes más altos como podemos ver en la imagen. Utilizaremos la base de datos Firestore 
+![Screenshot_105](https://user-images.githubusercontent.com/58042023/156451607-a20a9dd5-1a3a-4b07-a0a9-4db2f8d61047.png | width=100) 
+
+Para leer los documentos directamente desde Firestore utilizaremos las funciones proporcionadas por la propia documentacion de Firebase
+Además, crearemos Filas para la tabla a medida que vamos recolectando cada dato de forma uniforme.
+
+```
+db.collection("scores")
+                .orderBy("score", Query.Direction.DESCENDING)
+                .limit(40)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                System.out.println(document.getId() + " => " + document.getData());
+
+                                TableRow tr = new TableRow(ScoresView.this);
+                                tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT));
+                                // textwiew username
+                                TextView txtUsername = new TextView(ScoresView.this);
+                                txtUsername.setText(document.getData().get("user").toString());
+                                txtUsername.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.WRAP_CONTENT));
+                                txtUsername.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+                                txtUsername.setPadding(25,0,0,0);
+                                tr.addView(txtUsername);
+                                // textview scores
+                                TextView txtScores = new TextView(ScoresView.this);
+                                txtScores.setText(document.getData().get("score").toString());
+                                txtScores.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT));
+                                txtScores.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                txtScores.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+                                tr.addView(txtScores);
+                                table.addView(tr);
+                            }
+//                            System.out.println("size1 "+scoresMap.size());
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+```
+
 
