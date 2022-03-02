@@ -444,6 +444,10 @@ Por último se selecciona la opcion de instalar y la aplicación estara disponib
 
 <img src="https://user-images.githubusercontent.com/66254573/156454248-f2b98a79-e03f-4a89-b7c2-57756a1ad391.png" width="361">
 
+# Tabla de responsabilidades
+
+![image](https://user-images.githubusercontent.com/66254573/156463927-0d2cd0e2-9989-46d6-bf18-054aef4fc117.png)
+
 
 # Links de los vídeos
 
