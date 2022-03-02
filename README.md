@@ -453,5 +453,12 @@ Por último se selecciona la opcion de instalar y la aplicación estara disponib
 
 * https://www.youtube.com/watch?v=5hBvm_tnrHY&feature=youtu.be
 
-* 
+* https://www.youtube.com/watch?v=LHuTYJNBvC0
+
+# Aplicación en Aptoide
+
+Para descaragar la aplciación es ncesario tener instalado previamente en el dispositivo móvil la aplicación de Aptoide:
+
+* https://memorama.es.aptoide.com/?store_name=jorchdam&app_id=61727928
+
 
